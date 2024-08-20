@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# SQLite database files
+staples.db
+
+# VS Code settings
+.vscode/
+
+# Others
+*.log
+venv/
