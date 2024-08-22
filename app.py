@@ -1,12 +1,15 @@
 import streamlit as st
 import sqlite3
+import os
 from langchain_community.llms import Ollama
 
 # Initialize Ollama
 ollama = Ollama(model='llama3')
 
 def get_aisle_from_db(item):
-    conn = sqlite3.connect('staples.db')
+    # Get the absolute path to the database
+    db_path = os.path.join(os.path.dirname(__file__), 'staples.db')
+    conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
     # Use a SQL query to find a partial match
