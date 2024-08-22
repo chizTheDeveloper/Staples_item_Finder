@@ -1,3 +1,2 @@
 streamlit==1.22.0
-langchain-community
-crewai
+langchain-community==0.2.12
