@@ -5,11 +5,8 @@ from groq import Groq
 from dotenv import load_dotenv
 import os
 
-load_dotenv("staples.env")
-api_key = os.getenv("GROQ_API_KEY")
-
-# Initialize Groq client
-client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
+api_key = st.secrets["groq"]["api_key"]
+client = Groq(api_key=api_key)
 
 def get_aisle_from_db(item):
     conn = sqlite3.connect('staples.db')
