@@ -2,7 +2,6 @@ import streamlit as st
 import sqlite3
 import os
 from groq import Groq
-from dotenv import load_dotenv
 import os
 
 api_key = st.secrets["groq"]["api_key"]
