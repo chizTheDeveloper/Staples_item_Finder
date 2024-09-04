@@ -3,10 +3,6 @@ import sqlite3
 import re
 from groq import Groq
 import os
-from dotenv import load_dotenv
-
-# Load the .env file
-load_dotenv('staples.env')
 
 # Set the API key from either the environment variable or Streamlit secrets
 api_key = os.getenv("GROQ_API_KEY") or st.secrets["groq"]["api_key"]
