@@ -3,10 +3,19 @@ import sqlite3
 import re
 from groq import Groq
 import os
+import spacy
+
+# Load the spaCy model for normalization (install spaCy with 'pip install spacy' and download the model 'python -m spacy download en_core_web_sm')
+nlp = spacy.load("en_core_web_sm")
 
 # Set the API key from either the environment variable or Streamlit secrets
 api_key = os.getenv("GROQ_API_KEY") or st.secrets["groq"]["api_key"]
 client = Groq(api_key=api_key)
+
+# Function to preprocess and normalize item names
+def normalize_item_name(item):
+    doc = nlp(item)
+    return " ".join([token.lemma_ for token in doc])
 
 # Function to remove common words and extract the main item
 def extract_item_from_query(query):
@@ -19,19 +28,27 @@ def extract_item_from_query(query):
 def get_aisle_from_db(item):
     conn = sqlite3.connect('staples.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT aisle FROM aisles WHERE item = ?', (item,))
+
+    # Normalize item before querying database
+    normalized_item = normalize_item_name(item)
+    
+    # Perform a case-insensitive LIKE query with normalized item name
+    cursor.execute('SELECT aisle FROM aisles WHERE item LIKE ?', ('%' + normalized_item + '%',))
     result = cursor.fetchone()
     conn.close()
+    
     return result[0] if result else None
 
 # Function to classify the aisle
 def classify_aisle(item):
     keyword = extract_item_from_query(item)
+    
+    # Step 1: Attempt to fetch the aisle from the database
     aisle = get_aisle_from_db(keyword)
     if aisle:
         return aisle
 
-    # Call Groq to infer the aisle
+    # Step 2: Call Groq if not found in the database
     completion = client.chat.completions.create(
         model="llama3-8b-8192",
         messages=[
@@ -101,6 +118,7 @@ with st.form(key='input_form', clear_on_submit=True):
             response = f"**Suggested Aisle:** {aisle}"
             nresponse = f" {aisle}"
             nuser = f"**You** {user_input}" 
+            
             # Add Staples response to conversation history
             st.session_state.conversation.append({"role": "staples", "content": nresponse})
             st.session_state.latest_response = response
