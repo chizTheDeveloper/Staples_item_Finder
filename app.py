@@ -5,7 +5,7 @@ from groq import Groq
 import os
 import spacy
 
-# Load the spaCy model for normalization (install spaCy with 'pip install spacy' and download the model 'python -m spacy download en_core_web_sm')
+# Load the spaCy model for normalization (you can install spaCy with 'pip install spacy' and download the model 'python -m spacy download en_core_web_sm')
 nlp = spacy.load("en_core_web_sm")
 
 # Set the API key from either the environment variable or Streamlit secrets
