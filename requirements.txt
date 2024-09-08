@@ -4,3 +4,4 @@ Ollama==0.3.1
 groq== 0.9.0s
 spacy==3.7.6
 en-core-web-sm==3.7.1
+python==3.0.0
