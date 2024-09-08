@@ -4,9 +4,14 @@ import re
 from groq import Groq
 import os
 import spacy
+from spacy.cli import download
 
 # Load the spaCy model for normalization (you can install spaCy with 'pip install spacy' and download the model 'python -m spacy download en_core_web_sm')
-nlp = spacy.load("en_core_web_sm")
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    download("en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm")
 
 # Set the API key from either the environment variable or Streamlit secrets
 api_key = os.getenv("GROQ_API_KEY") or st.secrets["groq"]["api_key"]
