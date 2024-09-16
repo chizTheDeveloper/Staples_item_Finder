@@ -41,7 +41,7 @@ def get_aisle_from_db(item):
     normalized_item = normalize_item_name(item)
     
     # Perform a case-insensitive LIKE query with normalized item name
-    cursor.execute('SELECT aisle FROM aisles WHERE item LIKE ?', ('%' + normalized_item + '%',))
+    cursor.execute('SELECT aisle_loc FROM aisles WHERE item_name LIKE ?', ('%' + normalized_item + '%',))
     result = cursor.fetchone()
     conn.close()
     
@@ -79,11 +79,16 @@ def classify_aisle(item):
     response = response.strip()
     return response
 
-# Initialize conversation history in Streamlit session state
+# Initialize conversation history and user_input in Streamlit session state
 if 'conversation' not in st.session_state:
     st.session_state.conversation = []
+
 if 'latest_response' not in st.session_state:
     st.session_state.latest_response = ""
+
+# Make sure user_input is initialized
+if 'user_input' not in st.session_state:
+    st.session_state.user_input = ""
 
 # Streamlit interface
 st.title("🛒 Staples Aisle Finder Chatbot")
