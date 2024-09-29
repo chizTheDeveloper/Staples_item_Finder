@@ -13,3 +13,4 @@ staples.env
 # Others
 *.log
 venv/
+.toml
