@@ -9,7 +9,7 @@ __pycache__/
 # VS Code settings
 .vscode/
 staples.env
-.streamlit/
+streamlit/
 # Others
 *.log
 venv/
