@@ -51,12 +51,12 @@ def get_aisle_from_db(item):
 def classify_aisle(item):
     keyword = extract_item_from_query(item)
     
-    # Step 1: Attempt to fetch the aisle from the database
+    #Attempt to fetch the aisle from the database
     aisle = get_aisle_from_db(keyword)
     if aisle:
         return aisle
 
-    # Step 2: Call Groq if not found in the database
+    # Call Groq if not found in the database
     completion = client.chat.completions.create(
         model="llama3-8b-8192",
         messages=[
@@ -145,5 +145,5 @@ if st.session_state.latest_response:
     st.write(st.session_state.user_input)
     st.write(st.session_state.latest_response)
 
-# Optional: Add some spacing at the bottom
+#Add some spacing at the bottom
 st.markdown("<br>" * 3, unsafe_allow_html=True)
